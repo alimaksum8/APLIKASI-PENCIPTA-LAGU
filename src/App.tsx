@@ -144,8 +144,10 @@ export default function App() {
     setError(null);
     
     try {
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-      if (!apiKey) {
+      // Try Vite env first, then fallback to process.env (for AI Studio preview)
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || (typeof process !== 'undefined' ? process.env.GEMINI_API_KEY : null);
+      
+      if (!apiKey || apiKey === 'undefined') {
         throw new Error("API_KEY_INVALID");
       }
       const ai = new GoogleGenAI({ apiKey });
