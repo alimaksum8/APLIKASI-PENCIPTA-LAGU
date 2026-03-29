@@ -26,20 +26,51 @@ function cn(...inputs: ClassValue[]) {
 }
 
 const GENRES = [
-  "Pop", "Rock", "Slow Rock", "Metal", "Jazz", "Blues", "Country", "Hip Hop", 
-  "R&B", "Electronic", "EDM", "Classical", "Folk", "Reggae", "Dangdut", 
-  "K-Pop", "Synthwave", "Lo-fi", "Acoustic", "Orchestral", "Indie", "Punk",
-  "Soul", "Funk", "Disco", "Techno", "House", "Trance", "Dubstep", "Drum & Bass",
-  "Latin", "Bossa Nova", "Afrobeat", "J-Pop", "City Pop", "Koplo", "Trap",
-  "Grunge", "Ska", "Hardcore", "Emo", "Ambient", "Gospel", "Death Metal", "Thrash Metal"
+  "Dangdut", "Koplo", "Campursari", "Keroncong", "Pop Indonesia", "Indie Indo", 
+  "Reggae", "Ska", "Rock", "Heavy Metal", "Death Metal", "Punk", "Pop Punk", 
+  "Synthwave", "Retrowave", "Lo-fi Hip Hop", "Trap", "Rap Klasik", "R&B", "Soul", 
+  "Neo-soul", "Jazz", "Bossa Nova", "Swing", "Blues", "Folk", "Bluegrass", 
+  "Country", "Americana", "Klasik", "Orkestra", "Chamber", "EDM", "Techno", 
+  "House", "Deep House", "Dubstep", "Future Bass", "Phonk", "K-Pop", "J-Pop", 
+  "J-Rock", "Gaya Anime", "Gospel", "New Age", "Ambient", "Industrial", "Disco", 
+  "Funk", "Afrobeats", "Latin", "Salsa", "Flamenco",
+  "Ambient Electronic", "Arabic Music", "Atmospheric Metal", "Ballroom", "Big Band", 
+  "Black Metal", "Butoh", "Carnatic Music", "Celtic Music", "Classical", 
+  "Classic Rock", "Contemporary Classical", "Cool Jazz", "Cyberpunk", "Dance Pop", 
+  "Dark Ambient", "Deathcore", "Delta Blues", "Doom Metal", "Electronic", 
+  "Electronic Rock", "Electropop", "Ethereal", "Experimental Metal", 
+  "Experimental Rock", "Film Score", "Future Garage", "Future House", "Gagaku", 
+  "Glitch Hop", "Glitch Pop", "Gregorian Chant", "Hardstyle", "Hindustani", 
+  "Hindustani Folk", "Hip Hop", "Hyper Pop", "Indie Pop", "Intelligent Dance", 
+  "Irish Folk", "Jazz Fusion", "Jazz Rap", "Kayōkyoku", "Latin Folk", "Latin Pop", 
+  "Light Opera", "Mambo", "Melodic Death Metal", "Minimalism", "Minimal Tech", 
+  "Modal Jazz", "Mumble Rap", "Musical", "Musique Concrète", "Neo Folk", 
+  "Noise Music", "Opera", "Opera Pop", "Piedmont Blues", "Pop", "Pop Rap", 
+  "Post-Grunge", "Post-Punk", "Power Metal", "Prayer", "Psychedelic Folk", 
+  "Psychedelic Pop", "Psychedelic Rock", "Psychedelic Trance", "Punk Jazz", "Rap", 
+  "Rock Opera", "Rogue Theme", "Roots Rock", "Russian Folk", "Samba", "Serialism", 
+  "Shamisen", "Sonata", "Sound Collage", "Sound Texture", "Soul Jazz", 
+  "Spaghetti Western", "Spiritual", "Steady Rock", "String Quartet", "Sufi Music", 
+  "Symphonic Black Metal", "Symphonic Metal", "Symphonic Pop", "Symphonic Rock", 
+  "Symphony", "Synth-pop", "Tarab", "Tech House", "Texas Blues", "Thrash Metal", 
+  "Traditional Folk", "Troubadour", "TV Theme", "UK Drill", "Vaudeville", "Wave Pop", 
+  "West Coast Rap"
 ];
 
 const MOODS = [
-  "Happy", "Sad", "Melancholic", "Energetic", "Relaxed", "Angry", "Romantic", 
-  "Epic", "Dark", "Dreamy", "Nostalgic", "Aggressive", "Peaceful", "Mysterious",
-  "Uplifting", "Cinematic", "Fierce", "Tense", "Chaotic", "Joyful", "Playful",
-  "Hopeful", "Serene", "Confident", "Lonely", "Desperate", "Gloomy", "Haunting",
-  "Ethereal", "Quirky", "Groovy", "Chill", "Sophisticated", "Raw"
+  "Epik", "Melankolis", "Membangkitkan Semangat", "Agresif", "Bermimpi", "Gelap", 
+  "Enerjik", "Sinematik", "Romantis", "Santai", "Menyeramkan", "Nostalgia", 
+  "Penuh Harapan", "Marah", "Tenang", "Misterius", "Ethereal", "Trippy", 
+  "Sedih", "Aneh", "Lounge", "Megah", "Intens", "Peaceful", "Seksi", 
+  "Heroik", "Gotik", "Ceria", "Cemas", "Psikedelik", "Minimalis", 
+  "Sensual", "Canggih", "emosi",
+  "Antisipasi", "Breakdown", "Catchy", "Crisp", "Danceable", "Depresif", 
+  "Putus Asa", "Ear Candy", "Emosional", "Tempo Cepat", "Ketakutan", 
+  "Futuristik", "Tegangan Tinggi", "Kegembiraan", "Melodis", "Misteri", 
+  "Suasana Malam", "Progresif", "Rileks", "Kesedihan", "Menggoda", "Tajam", 
+  "Lambat", "Sedih Lambat", "Soulful", "Suasana Hidup & Soulful", 
+  "Bersemangat", "Kejutan", "Sinkopasi", "Lembut", "Trance", "Kemenangan", 
+  "Trip-hop"
 ];
 
 const INSTRUMENTS = [
@@ -66,7 +97,8 @@ const INTROS = [
   "Bass Slap", "Synth Arpeggio", "Heavy Drum Fill", "Ambient Rain/Nature", 
   "Lo-fi Vinyl Crackle", "Orchestral Hit", "Piano Ballad Intro", 
   "Heavy Metal Riff Intro", "Funk Bass Intro", "Jazz Sax Solo Intro", 
-  "Electronic Arpeggio Intro", "Tribal Percussion Intro"
+  "Electronic Arpeggio Intro", "Tribal Percussion Intro",
+  "Drum", "Drum Machine", "Drum Trap", "Drum Dubstep", "Gitar Distorsi megah", "Drum Megah"
 ];
 
 const VOCALS = [
@@ -76,7 +108,17 @@ const VOCALS = [
   "Furry", "Suara Anak-anak", "Falsetto", "Vibrato", "Monoton", 
   "Kata-kata Lisan", "Scat Singing", "Yodeling", "Belting", 
   "Head Voice", "Chest Voice", "Vokal Sopran", "Vokal Seriosa", 
-  "Vokal Orkestra", "Vokal Dangdut", "Vokal Slowrock Malaysia", "Chanting"
+  "Vokal Orkestra", "Vokal Dangdut", "Vokal Slowrock Malaysia", "Chanting",
+  "Alto", "Alto Profondo", "Kuartet Barbershop", "Bariton", "Bariton-Martin", 
+  "Bass", "Basso Cantante", "Beatboxing", "Mezzo Kabaret", "Kata-kata Lisan Anak", 
+  "Pernapasan Sirkular", "Suara Jernih dan Merdu", "Mezzo-Sopran Koloratura", 
+  "Sopran Koloratura", "Konter-Tenor", "Alto Dramatis", "Vokal dengan Kedalaman Emosi", 
+  "AI Wanita", "Suara Emosional Wanita", "Suara Lembut", "Paduan Suara Gospel", 
+  "Fonasi Ingresif", "Slang Jamaika", "Bass Lirik", "Mezzo-Sopran", 
+  "Nyanyian Mikrotonal", "Suara Miku", "Suara Redam", "Rap Cepat", 
+  "Vokal Robotik", "Shibuya-kei", "Sopran", "Soubrette", "Suara Sensual Pria Spanyol", 
+  "Bicara Cepat", "Tenor Spinto", "Tenor", "Nyanyian Tenggorokan", "Bariton Verdi", 
+  "Vokal Sangat Robotik", "Tambahan Vokal", "Vocal Fry", "Whistle Register"
 ];
 
 const TEMPOS = [
@@ -96,6 +138,11 @@ const CREATORS = [
   "Diskoria (Disco/Retro)", "Dipha Barus (EDM/Disco)", "Ian Antono (Rock)",
   "Eross Candra (Sheila on 7)", "Piyu Padi", "Dewiq", "Bebi Romeo", 
   "Rinto Harahap (Classic Pop)", "Guruh Soekarnoputra", "Titiek Puspa"
+];
+
+const MALAYSIA_CREATORS = [
+  "Saari Amri", "Fauzi Marzuki", "M. Nasir", "Saari Amri (fokus lain)", 
+  "Eddie Hamid", "Ajai", "LY", "Baiduri", "Shah Slam", "Adnan Abu Hassan"
 ];
 
 const KEYS = [
@@ -126,6 +173,7 @@ export default function App() {
   const [vocals, setVocals] = useState<string[]>([]);
   const [tempo, setTempo] = useState('');
   const [creator, setCreator] = useState('');
+  const [malaysiaCreator, setMalaysiaCreator] = useState('');
   const [key, setKey] = useState('');
   const [selectedModel, setSelectedModel] = useState('gemini-3-flash-preview');
   
@@ -171,21 +219,24 @@ export default function App() {
         Alat Musik: ${instruments.join(', ')}
         Vokal: ${vocals.join(', ')}
         Tempo: ${tempo}
-        Khas Pencipta: ${creator}
+        Khas Pencipta Indonesia: ${creator}
+        Khas Pencipta Malaysia: ${malaysiaCreator}
         Kunci Dasar: ${key}
 
         INSTRUKSI KHUSUS GAYA:
         ${isIndoTimur ? '1. Untuk gaya Indonesia Timur, gunakan perpaduan Bahasa Indonesia dan dialek/bahasa wilayah Indonesia Timur (seperti Ambon/Papua/NTT) yang puitis namun santai, mirip gaya lagu "Pergi dan Jangan Kembali". Gunakan kata-kata seperti "sa", "ko", "tra", "su", dll secara natural.' : ''}
         ${isPuitis ? '2. Untuk gaya Puitis, gunakan diksi yang mendalam dan melankolis khas Slow Rock Malaysia era 90-an.' : ''}
-        ${creator ? `3. Gunakan gaya penulisan lirik yang sangat spesifik mengikuti karakteristik puitis, diksi, dan metafora khas ${creator}. Pastikan rima dan pemilihan kata mencerminkan identitas unik pencipta tersebut.` : ''}
+        ${creator ? `3. Gunakan gaya penulisan lirik yang sangat spesifik mengikuti karakteristik puitis, diksi, dan metafora khas pencipta Indonesia ${creator}. Pastikan rima dan pemilihan kata mencerminkan identitas unik pencipta tersebut.` : ''}
+        ${malaysiaCreator ? `4. Gunakan gaya penulisan lirik yang sangat spesifik mengikuti karakteristik puitis, penuh perasaan, diksi mendalam, dan metafora khas pencipta Malaysia ${malaysiaCreator} (Slow Rock/Pop Rock Malaysia style). Fokus pada tema cinta, rindu, dan pengorbanan. Pastikan rima dan pemilihan kata mencerminkan identitas unik pencipta tersebut.` : ''}
 
         ATURAN KETAT STYLE PROMPT (FIELD "style"):
         1. JANGAN PERNAH menyebutkan nama artis, penyanyi, atau pencipta lagu secara spesifik (misal: dilarang menulis "Rhoma Irama style" atau "Melly Goeslaw type beat").
-        2. Terjemahkan nama pencipta yang dipilih (${creator}) menjadi deskripsi teknis musik. Contoh:
+        2. Terjemahkan nama pencipta yang dipilih (${creator} ${malaysiaCreator}) menjadi deskripsi teknis musik. Contoh:
            - Rhoma Irama -> "Classic Indonesian dangdut, deep baritone male vocal, moralistic lyrics, accordion, brass section, 90s production".
            - Melly Goeslaw -> "Eclectic Indonesian pop, ethereal female vocal, poetic metaphors, cinematic arrangement, dramatic strings".
            - Deddy Dores -> "90s Indonesian slow rock, melancholic male vocal, distorted guitar solo, power ballad, emotional lyrics".
            - Justy Aldrin -> "Modern eastern Indonesian pop, acoustic guitar, island vibes, smooth male vocal, relaxed tempo".
+           - Pencipta Malaysia (Saari Amri/M. Nasir/etc) -> "90s Malaysian slow rock, high-pitched emotional male vocal, long screaming lead guitar solo, poetic lyrics, 60-90 BPM, melancholic atmosphere".
         3. Gunakan tag-tag musik yang umum diterima oleh Suno/Udio.
 
         INSTRUKSI KHUSUS HAK CIPTA:
@@ -388,11 +439,24 @@ export default function App() {
 
             <div className="pt-4 border-t border-black/5 space-y-6">
               <SelectField 
-                label="Khas Pencipta" 
+                label="Khas Pencipta Indonesia" 
                 icon={<Sparkles size={12} className="text-accent" />} 
                 value={creator} 
-                onChange={setCreator} 
+                onChange={(val) => {
+                  setCreator(val);
+                  if (val) setMalaysiaCreator('');
+                }} 
                 options={CREATORS} 
+              />
+              <SelectField 
+                label="Khas Pencipta Malaysia" 
+                icon={<Music size={12} className="text-accent" />} 
+                value={malaysiaCreator} 
+                onChange={(val) => {
+                  setMalaysiaCreator(val);
+                  if (val) setCreator('');
+                }} 
+                options={MALAYSIA_CREATORS} 
               />
               <SelectField 
                 label="Kunci Dasar" 
