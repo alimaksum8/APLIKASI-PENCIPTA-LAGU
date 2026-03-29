@@ -1,0 +1,5 @@
+{
+  "name": "APLIKASI PENCIPTA LAGU",
+  "description": "Generate lyrics and optimized music style prompts for Suno and Udio AI music generators.",
+  "requestFramePermissions": []
+}
