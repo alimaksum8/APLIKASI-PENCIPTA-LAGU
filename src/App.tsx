@@ -133,6 +133,7 @@ export default function App() {
   const [lyrics, setLyrics] = useState('');
   const [musicStyle, setMusicStyle] = useState('');
   const [isModified, setIsModified] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [copiedLyrics, setCopiedLyrics] = useState(false);
   const [copiedStyle, setCopiedStyle] = useState(false);
 
@@ -140,9 +141,14 @@ export default function App() {
     if (!about) return;
     setLoading(true);
     setIsModified(false);
+    setError(null);
     
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+      if (!apiKey) {
+        throw new Error("API_KEY_INVALID");
+      }
+      const ai = new GoogleGenAI({ apiKey });
       const prompt = `
         Buat lirik lagu dan deskripsi gaya musik (music style prompt) untuk AI Music Generator (Suno/Udio).
         
@@ -205,8 +211,19 @@ export default function App() {
       setLyrics(result.lyrics || '');
       setMusicStyle(result.style || '');
       setIsModified(!!result.copyrightModified);
-    } catch (error) {
-      console.error("Error generating content:", error);
+    } catch (err: any) {
+      console.error("Error generating content:", err);
+      let message = "Terjadi kesalahan saat menghubungi AI. Silakan coba lagi.";
+      
+      if (err.message?.includes("429") || err.message?.includes("quota")) {
+        message = "Batas penggunaan (quota) tercapai. Silakan tunggu sebentar sebelum mencoba lagi.";
+      } else if (err.message?.includes("API_KEY_INVALID") || err.message?.includes("403")) {
+        message = "Kunci API tidak valid. Pastikan Anda telah memasukkan API_KEY yang benar di pengaturan.";
+      } else if (err.message?.includes("safety")) {
+        message = "Konten diblokir oleh filter keamanan AI. Coba ubah topik atau kata-kata Anda.";
+      }
+      
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -435,6 +452,20 @@ export default function App() {
 
         {/* Right Column: Results */}
         <div className="lg:col-span-7 space-y-6">
+          {/* Error Message */}
+          {error && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="p-4 bg-red-500/10 border border-red-500/20 rounded-[24px] text-red-600 text-xs font-medium flex items-center gap-3"
+            >
+              <div className="w-6 h-6 bg-red-500 rounded-lg flex items-center justify-center shrink-0">
+                <span className="text-white font-bold">!</span>
+              </div>
+              {error}
+            </motion.div>
+          )}
+
           <motion.button 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
