@@ -106,8 +106,8 @@ const KEYS = [
 ];
 
 const MODELS = [
-  "gemini-2.5-flash-preview",
-  "gemini-3-flash-preview"
+  "gemini-3-flash-preview",
+  "gemini-3.1-flash-lite-preview"
 ];
 
 export default function App() {
@@ -127,7 +127,7 @@ export default function App() {
   const [tempo, setTempo] = useState('');
   const [creator, setCreator] = useState('');
   const [key, setKey] = useState('');
-  const [selectedModel, setSelectedModel] = useState('gemini-2.5-flash-preview');
+  const [selectedModel, setSelectedModel] = useState('gemini-3-flash-preview');
   
   const [loading, setLoading] = useState(false);
   const [lyrics, setLyrics] = useState('');
