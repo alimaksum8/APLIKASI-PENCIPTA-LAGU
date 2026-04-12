@@ -73,6 +73,14 @@ const MOODS = [
   "Trip-hop"
 ];
 
+const INSTRUMENTS_AKUSTIK = [
+  "Gitar Akustik Petik", "Gitar Akustik Persekusi", "Gitar Akustik Lead", 
+  "Gitar Akustik Strumming", "Gitar Nilon", "Ukulele", "Banjo", "Mandolin",
+  "Grand Piano", "Upright Piano", "Biola", "Cello", "Double Bass", 
+  "Harpa", "Seruling", "Harmonika", "Akordeon", "Perkusi Akustik", 
+  "Kendang", "Suling", "Angklung", "Cajon"
+];
+
 const INSTRUMENTS = [
   "Gitar Akustik", "Gitar Elektrik", "Gitar Distorsi", "Gitar Muted", 
   "Gitar Slide", "Gitar 12-Senar", "Gitar Nilon", "Biola", "Viola", 
@@ -89,6 +97,14 @@ const INSTRUMENTS = [
   "Erhu", "Tabla", "Djembe", "Didgeridoo"
 ];
 
+const INTROS_AKUSTIK = [
+  "Petikan Gitar Akustik Lembut", "Strumming Gitar Akustik", "Intro Piano Solo", 
+  "Intro Biola Melankolis", "Intro Suling Bambu", "Intro Ukulele Ceria",
+  "Intro Cajon & Gitar", "Intro Harmonika Blues", "Intro Akordeon",
+  "Intro Perkusi Tangan", "Intro Harpa Ethereal", "Intro Cello Dalam",
+  "Intro Fingerstyle Guitar", "Intro Arpeggio Nilon"
+];
+
 const INTROS = [
   "Biola", "Grand Piano", "Saksofon", "Gitar Distorsi", "Gitar Elektrik", 
   "Perkusi Akustik", "Solo Gitar Sustain", "Solo Gitar Bending", 
@@ -99,6 +115,14 @@ const INTROS = [
   "Heavy Metal Riff Intro", "Funk Bass Intro", "Jazz Sax Solo Intro", 
   "Electronic Arpeggio Intro", "Tribal Percussion Intro",
   "Drum", "Drum Machine", "Drum Trap", "Drum Dubstep", "Gitar Distorsi megah", "Drum Megah"
+];
+
+const VOCALS_AKUSTIK = [
+  "Vokal Akustik Lembut", "Vokal Intim", "Vokal Raw", "Vokal Tanpa Efek", 
+  "Vokal Folk", "Vokal Jazz Santai", "Vokal Akustik Pria", "Vokal Akustik Wanita",
+  "Vokal Serak Alami", "Vokal Berbisik Lembut", "Vokal Soulful Akustik",
+  "Vokal Harmonisasi Akustik", "Vokal Falsetto Tipis", "Vokal Jernih",
+  "Vokal Deep Acoustic", "Vokal Indie Folk", "Vokal Country", "Vokal Blues Akustik"
 ];
 
 const VOCALS = [
@@ -166,10 +190,16 @@ export default function App() {
   const [isRap, setIsRap] = useState(false);
   const [isDisco, setIsDisco] = useState(false);
   const [isIndoTimur, setIsIndoTimur] = useState(false);
+  const [isAkustikPop, setIsAkustikPop] = useState(false);
+  const [isAkustikRock, setIsAkustikRock] = useState(false);
+  const [isAkustikBallad, setIsAkustikBallad] = useState(false);
   const [genres, setGenres] = useState<string[]>([]);
+  const [introsAkustik, setIntrosAkustik] = useState<string[]>([]);
   const [intros, setIntros] = useState<string[]>([]);
   const [moods, setMoods] = useState<string[]>([]);
+  const [instrumentsAkustik, setInstrumentsAkustik] = useState<string[]>([]);
   const [instruments, setInstruments] = useState<string[]>([]);
+  const [vocalsAkustik, setVocalsAkustik] = useState<string[]>([]);
   const [vocals, setVocals] = useState<string[]>([]);
   const [tempo, setTempo] = useState('');
   const [creator, setCreator] = useState('');
@@ -178,6 +208,7 @@ export default function App() {
   const [selectedModel, setSelectedModel] = useState('gemini-3-flash-preview');
   
   const [loading, setLoading] = useState(false);
+  const [generatedTitle, setGeneratedTitle] = useState('');
   const [lyrics, setLyrics] = useState('');
   const [musicStyle, setMusicStyle] = useState('');
   const [isModified, setIsModified] = useState(false);
@@ -200,6 +231,9 @@ export default function App() {
       }
       const ai = new GoogleGenAI({ apiKey });
       const prompt = `
+        ATURAN GLOBAL PALING UTAMA:
+        DILARANG KERAS menyebutkan nama artis, penyanyi, band, atau pencipta lagu di SEMUA field output (title, lyrics, style). Fokuslah pada deskripsi teknis, emosi, dan diksi puitis. Jangan pernah menulis "style of [Artist]" atau "type beat [Artist]".
+
         Buat lirik lagu dan deskripsi gaya musik (music style prompt) untuk AI Music Generator (Suno/Udio).
         
         Detail Lagu:
@@ -211,23 +245,46 @@ export default function App() {
           isDangdut && 'Dangdut Style',
           isRap && 'Rap Style',
           isDisco && 'Disco Style',
-          isIndoTimur && 'Indonesia Timur Style'
+          isIndoTimur && 'Indonesia Timur Style',
+          isAkustikPop && 'Akustik Pop Style',
+          isAkustikRock && 'Akustik Rock Style',
+          isAkustikBallad && 'Akustik Ballad Style'
         ].filter(Boolean).join(', ')}
-        Intro: ${intros.join(', ')}
+        Intro Akustik: ${introsAkustik.join(', ')}
+        Intro Lainnya: ${intros.join(', ')}
         Genre: ${genres.join(', ')}
         Mood: ${moods.join(', ')}
-        Alat Musik: ${instruments.join(', ')}
-        Vokal: ${vocals.join(', ')}
+        Alat Musik Akustik: ${instrumentsAkustik.join(', ')}
+        Alat Musik Lainnya: ${instruments.join(', ')}
+        Vokal Akustik: ${vocalsAkustik.join(', ')}
+        Vokal Lainnya: ${vocals.join(', ')}
         Tempo: ${tempo}
         Khas Pencipta Indonesia: ${creator}
         Khas Pencipta Malaysia: ${malaysiaCreator}
         Kunci Dasar: ${key}
+
+        INSTRUKSI KHUSUS LIRIK & MUSIK:
+        1. Di setiap bagian lirik (Verse, Chorus, Bridge, dll), tambahkan perintah musik dalam kurung di awal baris bagian tersebut.
+        2. Perintah musik harus mencakup instruksi tempo yang dinamis namun TETAP berada dalam rentang yang dipilih user: ${tempo}.
+           - Contoh: Jika user memilih "40-60 BPM", maka AI boleh menulis (Verse, Slow tempo 45 BPM, emotional piano) atau (Chorus, Faster 58 BPM, powerful strings).
+           - AI BEBAS menentukan angka BPM spesifik selama masih dalam range ${tempo}.
+        3. Tambahkan juga instruksi emosi atau instrumen pendukung dalam kurung tersebut.
+        ${(isAkustikPop || isAkustikRock || isAkustikBallad) ? '4. KHUSUS GAYA AKUSTIK: Wajib selipkan progresi chord (misal: [C - G - Am - F]) di dalam kurung perintah musik tersebut.' : ''}
+
+        INSTRUKSI KHUSUS JUDUL:
+        Buatlah judul lagu yang:
+        1. Tidak asing di telinga publik namun tetap segar.
+        2. Membuat penasaran dan menarik perhatian.
+        3. Puitis dan memiliki makna mendalam.
+        4. Maksimal 5-7 kata.
+        5. DILARANG menyebutkan nama artis atau tokoh nyata.
 
         INSTRUKSI KHUSUS GAYA:
         ${isIndoTimur ? '1. Untuk gaya Indonesia Timur, gunakan perpaduan Bahasa Indonesia dan dialek/bahasa wilayah Indonesia Timur (seperti Ambon/Papua/NTT) yang puitis namun santai, mirip gaya lagu "Pergi dan Jangan Kembali". Gunakan kata-kata seperti "sa", "ko", "tra", "su", dll secara natural.' : ''}
         ${isPuitis ? '2. Untuk gaya Puitis, gunakan diksi yang mendalam dan melankolis khas Slow Rock Malaysia era 90-an.' : ''}
         ${creator ? `3. Gunakan gaya penulisan lirik yang sangat spesifik mengikuti karakteristik puitis, diksi, dan metafora khas pencipta Indonesia ${creator}. Pastikan rima dan pemilihan kata mencerminkan identitas unik pencipta tersebut.` : ''}
         ${malaysiaCreator ? `4. Gunakan gaya penulisan lirik yang sangat spesifik mengikuti karakteristik puitis, penuh perasaan, diksi mendalam, dan metafora khas pencipta Malaysia ${malaysiaCreator} (Slow Rock/Pop Rock Malaysia style). Fokus pada tema cinta, rindu, dan pengorbanan. Pastikan rima dan pemilihan kata mencerminkan identitas unik pencipta tersebut.` : ''}
+        ${(isAkustikPop || isAkustikRock || isAkustikBallad) ? `5. UNTUK GAYA AKUSTIK: Hasil Music Style Prompt (field "style") WAJIB HANYA menggunakan: "gitar akustik petik, gitar akustik persekusi, gitar akustik lead". JANGAN mencampur instrumen lain (seperti drum elektrik, synth, atau bass elektrik) KECUALI jika user secara eksplisit memilih alat musik lain di daftar berikut: ${[...instruments, ...instrumentsAkustik].join(', ')}.` : ''}
 
         ATURAN KETAT STYLE PROMPT (FIELD "style"):
         1. JANGAN PERNAH menyebutkan nama artis, penyanyi, atau pencipta lagu secara spesifik (misal: dilarang menulis "Rhoma Irama style" atau "Melly Goeslaw type beat").
@@ -246,6 +303,7 @@ export default function App() {
 
         Format Output (JSON):
         {
+          "title": "Judul lagu yang puitis dan menarik...",
           "lyrics": "Lirik lagu lengkap...",
           "style": "Deskripsi gaya musik...",
           "copyrightModified": boolean (true jika ada kata yang diubah karena alasan hak cipta, false jika tidak)
@@ -261,6 +319,7 @@ export default function App() {
       });
 
       const result = JSON.parse(response.text || '{}');
+      setGeneratedTitle(result.title || '');
       setLyrics(result.lyrics || '');
       setMusicStyle(result.style || '');
       setIsModified(!!result.copyrightModified);
@@ -435,6 +494,48 @@ export default function App() {
                 </div>
                 <span className="text-sm font-semibold text-ink/60 group-hover:text-ink transition-colors">Indonesia Timur</span>
               </label>
+
+              <label className="flex items-center gap-4 cursor-pointer group">
+                <div className="relative">
+                  <input 
+                    type="checkbox" 
+                    checked={isAkustikPop}
+                    onChange={(e) => setIsAkustikPop(e.target.checked)}
+                    className="peer sr-only"
+                  />
+                  <div className="w-7 h-7 border-2 border-black/10 rounded-xl peer-checked:bg-accent peer-checked:border-accent transition-all duration-300" />
+                  <Check className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white scale-0 peer-checked:scale-100 transition-transform duration-300" size={16} />
+                </div>
+                <span className="text-sm font-semibold text-ink/60 group-hover:text-ink transition-colors">Akustik Pop</span>
+              </label>
+
+              <label className="flex items-center gap-4 cursor-pointer group">
+                <div className="relative">
+                  <input 
+                    type="checkbox" 
+                    checked={isAkustikRock}
+                    onChange={(e) => setIsAkustikRock(e.target.checked)}
+                    className="peer sr-only"
+                  />
+                  <div className="w-7 h-7 border-2 border-black/10 rounded-xl peer-checked:bg-accent peer-checked:border-accent transition-all duration-300" />
+                  <Check className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white scale-0 peer-checked:scale-100 transition-transform duration-300" size={16} />
+                </div>
+                <span className="text-sm font-semibold text-ink/60 group-hover:text-ink transition-colors">Akustik Rock</span>
+              </label>
+
+              <label className="flex items-center gap-4 cursor-pointer group">
+                <div className="relative">
+                  <input 
+                    type="checkbox" 
+                    checked={isAkustikBallad}
+                    onChange={(e) => setIsAkustikBallad(e.target.checked)}
+                    className="peer sr-only"
+                  />
+                  <div className="w-7 h-7 border-2 border-black/10 rounded-xl peer-checked:bg-accent peer-checked:border-accent transition-all duration-300" />
+                  <Check className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white scale-0 peer-checked:scale-100 transition-transform duration-300" size={16} />
+                </div>
+                <span className="text-sm font-semibold text-ink/60 group-hover:text-ink transition-colors">Akustik Ballad</span>
+              </label>
             </div>
 
             <div className="pt-4 border-t border-black/5 space-y-6">
@@ -477,6 +578,13 @@ export default function App() {
               options={GENRES} 
             />
             <MultiSelectField 
+              label="Intro Akustik" 
+              icon={<Music size={12} className="text-accent" />} 
+              selected={introsAkustik} 
+              onToggle={(val) => setIntrosAkustik(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val])} 
+              options={INTROS_AKUSTIK} 
+            />
+            <MultiSelectField 
               label="Intro" 
               icon={<Music size={12} className="text-accent" />} 
               selected={intros} 
@@ -492,6 +600,13 @@ export default function App() {
             />
             <div className="space-y-10">
               <MultiSelectField 
+                label="Instruments Akustik" 
+                icon={<Guitar size={12} className="text-accent" />} 
+                selected={instrumentsAkustik} 
+                onToggle={(val) => setInstrumentsAkustik(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val])} 
+                options={INSTRUMENTS_AKUSTIK} 
+              />
+              <MultiSelectField 
                 label="Instruments" 
                 icon={<Guitar size={12} className="text-accent" />} 
                 selected={instruments} 
@@ -506,6 +621,13 @@ export default function App() {
                 options={TEMPOS} 
               />
             </div>
+            <MultiSelectField 
+              label="Vocals Akustik" 
+              icon={<Mic2 size={12} className="text-accent" />} 
+              selected={vocalsAkustik} 
+              onToggle={(val) => setVocalsAkustik(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val])} 
+              options={VOCALS_AKUSTIK} 
+            />
             <MultiSelectField 
               label="Vocals" 
               icon={<Mic2 size={12} className="text-accent" />} 
@@ -555,12 +677,26 @@ export default function App() {
             <div className="absolute -top-20 -right-20 w-60 h-60 bg-accent/15 blur-[100px] rounded-full pointer-events-none" />
             <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-accent/10 blur-[100px] rounded-full pointer-events-none" />
 
-            <div className="border-b border-black/5 px-10 py-8 flex items-center justify-between bg-accent/5">
-              <h2 className="font-serif italic text-2xl text-ink">Generated Masterpiece</h2>
-              <div className="flex gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-black/10" />
-                <div className="w-2.5 h-2.5 rounded-full bg-black/10" />
-                <div className="w-2.5 h-2.5 rounded-full bg-accent/50" />
+            <div className="border-b border-black/5 px-10 py-8 flex flex-col gap-1 bg-accent/5">
+              {generatedTitle && (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="mb-2"
+                >
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent/60 block mb-1">Judul Lagu</span>
+                  <h1 className="text-3xl font-serif italic text-accent leading-tight">
+                    {generatedTitle}
+                  </h1>
+                </motion.div>
+              )}
+              <div className="flex items-center justify-between">
+                <h2 className="font-serif italic text-2xl text-ink">Generated Masterpiece</h2>
+                <div className="flex gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-black/10" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-black/10" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-accent/50" />
+                </div>
               </div>
             </div>
 
