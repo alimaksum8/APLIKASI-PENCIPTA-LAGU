@@ -76,9 +76,9 @@ const MOODS = [
 const INSTRUMENTS_AKUSTIK = [
   "Gitar Akustik Petik", "Gitar Akustik Persekusi", "Gitar Akustik Lead", 
   "Gitar Akustik Strumming", "Gitar Nilon", "Ukulele", "Banjo", "Mandolin",
-  "Grand Piano", "Upright Piano", "Biola", "Cello", "Double Bass", 
+  "Grand Piano", "Upright Piano", "Biola", "Cello", "Solo Cello", "Double Bass", 
   "Harpa", "Seruling", "Harmonika", "Akordeon", "Perkusi Akustik", 
-  "Kendang", "Suling", "Angklung", "Cajon"
+  "Kendang", "Suling", "Angklung", "Cajon", "English Horn", "Piccolo", "Glockenspiel"
 ];
 
 const INSTRUMENTS = [
@@ -98,6 +98,7 @@ const INSTRUMENTS = [
 ];
 
 const INTROS_AKUSTIK = [
+  "Melodi Main Theme", "Melodi Vocal Verse", "Melodi Vocal Chorus",
   "Petikan Gitar Akustik Lembut", "Strumming Gitar Akustik", "Intro Piano Solo", 
   "Intro Biola Melankolis", "Intro Suling Bambu", "Intro Ukulele Ceria",
   "Intro Cajon & Gitar", "Intro Harmonika Blues", "Intro Akordeon",
@@ -106,6 +107,7 @@ const INTROS_AKUSTIK = [
 ];
 
 const INTROS = [
+  "Melodi Main Theme", "Melodi Vocal Verse", "Melodi Vocal Chorus",
   "Biola", "Grand Piano", "Saksofon", "Gitar Distorsi", "Gitar Elektrik", 
   "Perkusi Akustik", "Solo Gitar Sustain", "Solo Gitar Bending", 
   "Solo Gitar Vibrato", "Solo Nada Tinggi / Gitar Menjerit", "Solo Gitar Lead",
@@ -207,6 +209,11 @@ export default function App() {
   const [key, setKey] = useState('');
   const [selectedModel, setSelectedModel] = useState('gemini-3-flash-preview');
   
+  // Thematic Intro Modal State
+  const [showThematicModal, setShowThematicModal] = useState(false);
+  const [activeThematicIntro, setActiveThematicIntro] = useState('');
+  const [thematicInstruments, setThematicInstruments] = useState<Record<string, string[]>>({});
+
   const [loading, setLoading] = useState(false);
   const [generatedTitle, setGeneratedTitle] = useState('');
   const [lyrics, setLyrics] = useState('');
@@ -256,6 +263,13 @@ export default function App() {
         Mood: ${moods.join(', ')}
         Alat Musik Akustik: ${instrumentsAkustik.join(', ')}
         Alat Musik Lainnya: ${instruments.join(', ')}
+        
+        INSTRUKSI KHUSUS INTRO TEMATIK:
+        ${Object.keys(thematicInstruments).map((intro) => {
+          const insts = thematicInstruments[intro];
+          return insts && insts.length > 0 ? `- Untuk "${intro}", gunakan instrumen: ${insts.join(', ')}` : '';
+        }).filter(Boolean).join('\n')}
+
         Vokal Akustik: ${vocalsAkustik.join(', ')}
         Vokal Lainnya: ${vocals.join(', ')}
         Tempo: ${tempo}
@@ -581,14 +595,28 @@ export default function App() {
               label="Intro Akustik" 
               icon={<Music size={12} className="text-accent" />} 
               selected={introsAkustik} 
-              onToggle={(val) => setIntrosAkustik(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val])} 
+              onToggle={(val) => {
+                const isThematic = ["Melodi Main Theme", "Melodi Vocal Verse", "Melodi Vocal Chorus"].includes(val);
+                if (isThematic && !introsAkustik.includes(val)) {
+                  setActiveThematicIntro(val);
+                  setShowThematicModal(true);
+                }
+                setIntrosAkustik(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]);
+              }} 
               options={INTROS_AKUSTIK} 
             />
             <MultiSelectField 
               label="Intro" 
               icon={<Music size={12} className="text-accent" />} 
               selected={intros} 
-              onToggle={(val) => setIntros(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val])} 
+              onToggle={(val) => {
+                const isThematic = ["Melodi Main Theme", "Melodi Vocal Verse", "Melodi Vocal Chorus"].includes(val);
+                if (isThematic && !intros.includes(val)) {
+                  setActiveThematicIntro(val);
+                  setShowThematicModal(true);
+                }
+                setIntros(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]);
+              }} 
               options={INTROS} 
             />
             <MultiSelectField 
@@ -766,6 +794,76 @@ export default function App() {
           Aplikasi Pembuat Lirik <span className="text-ink/60">By Ali Maksum Gejes</span>
         </p>
       </footer>
+
+      {/* Thematic Intro Modal */}
+      {showThematicModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/40 backdrop-blur-sm">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="glass-card w-full max-w-lg rounded-[40px] p-10 shadow-2xl border border-white/20 relative overflow-hidden"
+          >
+            <div className="absolute -top-20 -right-20 w-60 h-60 bg-accent/20 blur-[80px] rounded-full pointer-events-none" />
+            
+            <div className="relative space-y-8">
+              <div className="space-y-2">
+                <div className="flex items-center gap-3 text-accent">
+                  <Sparkles size={20} />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Thematic Configuration</span>
+                </div>
+                <h3 className="text-2xl font-serif italic text-ink">
+                  Pilih Alat Musik untuk <span className="text-accent">{activeThematicIntro}</span>
+                </h3>
+                <p className="text-sm text-ink/40 leading-relaxed">
+                  Pilih instrumen yang akan memainkan melodi utama pada bagian intro ini.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                {[
+                  "Solo Cello", "English Horn", "Piccolo", "Glockenspiel", "Gitar Akustik Lead", 
+                  "Biola Solo", "Seruling Solo", "Piano Solo", "Biola", "Grand Piano", 
+                  "Saksofon", "Gitar Distorsi", "Gitar Elektrik", "Perkusi Akustik", 
+                  "Solo Gitar Sustain", "Solo Gitar Bending", "Solo Gitar Vibrato"
+                ].map(inst => {
+                  const isSelected = (thematicInstruments[activeThematicIntro] || []).includes(inst);
+                  return (
+                    <button
+                      key={inst}
+                      onClick={() => {
+                        setThematicInstruments(prev => {
+                          const current = prev[activeThematicIntro] || [];
+                          const next = current.includes(inst) 
+                            ? current.filter(i => i !== inst) 
+                            : [...current, inst];
+                          return { ...prev, [activeThematicIntro]: next };
+                        });
+                      }}
+                      className={cn(
+                        "px-6 py-3 rounded-2xl text-xs font-bold transition-all border",
+                        isSelected 
+                          ? "bg-accent text-white border-accent shadow-lg shadow-accent/20" 
+                          : "bg-black/[0.02] border-black/5 text-ink/40 hover:text-ink hover:bg-black/5"
+                      )}
+                    >
+                      {inst}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="pt-4 flex gap-4">
+                <button 
+                  onClick={() => setShowThematicModal(false)}
+                  className="flex-1 py-4 bg-accent text-white rounded-2xl font-bold text-sm shadow-lg shadow-accent/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
+                >
+                  Simpan Konfigurasi
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }
