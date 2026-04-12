@@ -6,11 +6,12 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --font-serif: "Playfair Display", serif;
 
-  --color-bg: #2563EB;
-  --color-accent: #7C3AED;
-  --color-glass: rgba(245, 243, 255, 0.9);
-  --color-glass-border: rgba(124, 58, 237, 0.2);
-  --color-ink: #1E1B4B;
+  --color-bg: #0f172a;
+  --color-accent: #8b5cf6;
+  --color-accent-end: #ec4899;
+  --color-glass: #1e293b;
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+  --color-ink: #f8fafc;
 }
 
 @layer base {
@@ -32,11 +33,15 @@
   }
 
   .glass-card {
-    @apply bg-glass backdrop-blur-md border border-glass-border shadow-[0_8px_32px_rgba(0,0,0,0.1)];
+    @apply bg-glass border border-glass-border shadow-lg;
   }
 
   .glass-input {
-    @apply bg-white/60 border border-purple-200 focus:border-accent/50 focus:ring-4 focus:ring-accent/10 transition-all outline-none;
+    @apply bg-[#0f172a] border border-glass-border focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all outline-none text-ink;
+  }
+
+  .button-gradient {
+    @apply bg-gradient-to-r from-accent to-accent-end text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:opacity-90 transition-opacity;
   }
 
   .custom-scrollbar::-webkit-scrollbar {

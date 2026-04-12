@@ -543,7 +543,7 @@ export default function App() {
               "w-full flex items-center justify-center gap-3 px-8 py-6 rounded-[32px] font-bold text-xl transition-all duration-500",
               loading || !about 
                 ? "bg-black/5 text-ink/20 cursor-not-allowed border border-black/5" 
-                : "bg-accent text-white shadow-[0_20px_40px_rgba(59,130,246,0.2)] hover:shadow-[0_25px_50px_rgba(59,130,246,0.3)]"
+                : "button-gradient"
             )}
           >
             {loading ? <Loader2 className="animate-spin" size={24} /> : <Sparkles size={24} />}
