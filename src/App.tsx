@@ -26,35 +26,9 @@ function cn(...inputs: ClassValue[]) {
 }
 
 const GENRES = [
-  "Dangdut", "Koplo", "Campursari", "Keroncong", "Pop Indonesia", "Indie Indo", 
-  "Reggae", "Ska", "Rock", "Heavy Metal", "Death Metal", "Punk", "Pop Punk", 
-  "Synthwave", "Retrowave", "Lo-fi Hip Hop", "Trap", "Rap Klasik", "R&B", "Soul", 
-  "Neo-soul", "Jazz", "Bossa Nova", "Swing", "Blues", "Folk", "Bluegrass", 
-  "Country", "Americana", "Klasik", "Orkestra", "Chamber", "EDM", "Techno", 
-  "House", "Deep House", "Dubstep", "Future Bass", "Phonk", "K-Pop", "J-Pop", 
-  "J-Rock", "Gaya Anime", "Gospel", "New Age", "Ambient", "Industrial", "Disco", 
-  "Funk", "Afrobeats", "Latin", "Salsa", "Flamenco",
-  "Ambient Electronic", "Arabic Music", "Atmospheric Metal", "Ballroom", "Big Band", 
-  "Black Metal", "Butoh", "Carnatic Music", "Celtic Music", "Classical", 
-  "Classic Rock", "Contemporary Classical", "Cool Jazz", "Cyberpunk", "Dance Pop", 
-  "Dark Ambient", "Deathcore", "Delta Blues", "Doom Metal", "Electronic", 
-  "Electronic Rock", "Electropop", "Ethereal", "Experimental Metal", 
-  "Experimental Rock", "Film Score", "Future Garage", "Future House", "Gagaku", 
-  "Glitch Hop", "Glitch Pop", "Gregorian Chant", "Hardstyle", "Hindustani", 
-  "Hindustani Folk", "Hip Hop", "Hyper Pop", "Indie Pop", "Intelligent Dance", 
-  "Irish Folk", "Jazz Fusion", "Jazz Rap", "Kayōkyoku", "Latin Folk", "Latin Pop", 
-  "Light Opera", "Mambo", "Melodic Death Metal", "Minimalism", "Minimal Tech", 
-  "Modal Jazz", "Mumble Rap", "Musical", "Musique Concrète", "Neo Folk", 
-  "Noise Music", "Opera", "Opera Pop", "Piedmont Blues", "Pop", "Pop Rap", 
-  "Post-Grunge", "Post-Punk", "Power Metal", "Prayer", "Psychedelic Folk", 
-  "Psychedelic Pop", "Psychedelic Rock", "Psychedelic Trance", "Punk Jazz", "Rap", 
-  "Rock Opera", "Rogue Theme", "Roots Rock", "Russian Folk", "Samba", "Serialism", 
-  "Shamisen", "Sonata", "Sound Collage", "Sound Texture", "Soul Jazz", 
-  "Spaghetti Western", "Spiritual", "Steady Rock", "String Quartet", "Sufi Music", 
-  "Symphonic Black Metal", "Symphonic Metal", "Symphonic Pop", "Symphonic Rock", 
-  "Symphony", "Synth-pop", "Tarab", "Tech House", "Texas Blues", "Thrash Metal", 
-  "Traditional Folk", "Troubadour", "TV Theme", "UK Drill", "Vaudeville", "Wave Pop", 
-  "West Coast Rap"
+  "Dangdut", "Pop Indonesia", "Indie Indo", "Reggae", "Rock", "Lo-fi Hip Hop", 
+  "Orkestra", "Dubstep", "Latin", "Arabic Music", "Pop Rap", "Sufi Music", 
+  "Traditional Folk", "House", "Rap"
 ];
 
 const MOODS = [
@@ -183,6 +157,8 @@ const MODELS = [
   "gemini-3.1-flash-lite-preview"
 ];
 
+const DURATIONS = ["4", "5", "6", "7", "8"];
+
 export default function App() {
   const [title, setTitle] = useState('');
   const [about, setAbout] = useState('');
@@ -207,6 +183,7 @@ export default function App() {
   const [creator, setCreator] = useState('');
   const [malaysiaCreator, setMalaysiaCreator] = useState('');
   const [key, setKey] = useState('');
+  const [duration, setDuration] = useState('4');
   const [selectedModel, setSelectedModel] = useState('gemini-3-flash-preview');
   
   // Thematic Intro Modal State
@@ -276,6 +253,7 @@ export default function App() {
         Khas Pencipta Indonesia: ${creator}
         Khas Pencipta Malaysia: ${malaysiaCreator}
         Kunci Dasar: ${key}
+        Durasi: ${duration} menit
 
         INSTRUKSI KHUSUS LIRIK & MUSIK:
         1. Di setiap bagian lirik (Verse, Chorus, Bridge, dll), tambahkan perintah musik dalam kurung di awal baris bagian tersebut.
@@ -398,17 +376,41 @@ export default function App() {
               />
             </div>
 
-            <div className="space-y-3">
-              <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-ink/40 flex items-center gap-2">
-                <Type size={12} className="text-accent" /> Song Title
-              </label>
-              <input 
-                type="text" 
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Enter song title..."
-                className="w-full glass-input rounded-2xl px-6 py-4 text-lg font-serif placeholder:text-ink/20 text-ink"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="md:col-span-2 space-y-3">
+                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-ink/40 flex items-center gap-2">
+                  <Type size={12} className="text-accent" /> Song Title
+                </label>
+                <input 
+                  type="text" 
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Enter song title..."
+                  className="w-full glass-input rounded-2xl px-6 py-4 text-lg font-serif placeholder:text-ink/20 text-ink"
+                />
+              </div>
+
+              <div className="space-y-3">
+                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-ink/40 flex items-center gap-2">
+                  <Clock size={12} className="text-accent" /> Durasi (Menit)
+                </label>
+                <div className="flex gap-2">
+                  {DURATIONS.map(d => (
+                    <button
+                      key={d}
+                      onClick={() => setDuration(d)}
+                      className={cn(
+                        "flex-1 py-4 rounded-2xl text-sm font-bold transition-all border",
+                        duration === d 
+                          ? "bg-accent text-white border-accent shadow-lg shadow-accent/20" 
+                          : "bg-black/[0.02] border-black/5 text-ink/40 hover:text-ink hover:bg-black/5"
+                      )}
+                    >
+                      {d}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
             <div className="space-y-3">
