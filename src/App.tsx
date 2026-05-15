@@ -102,23 +102,12 @@ const VOCALS_AKUSTIK = [
 ];
 
 const VOCALS = [
-  "Pria", "Wanita", "Serak", "Opera", "Paduan Suara", "Berbisik", 
-  "Soulful", "Duo", "Nada Tinggi", "Berteriak", "Bass Dalam", 
-  "Auto-tune", "Vocaloid", "Rap", "Growl", "Bernapas", "Harmonisasi", 
-  "Furry", "Suara Anak-anak", "Falsetto", "Vibrato", "Monoton", 
-  "Kata-kata Lisan", "Scat Singing", "Yodeling", "Belting", 
-  "Head Voice", "Chest Voice", "Vokal Sopran", "Vokal Seriosa", 
-  "Vokal Orkestra", "Vokal Dangdut", "Vokal Slowrock Malaysia", "Chanting",
-  "Alto", "Alto Profondo", "Kuartet Barbershop", "Bariton", "Bariton-Martin", 
-  "Bass", "Basso Cantante", "Beatboxing", "Mezzo Kabaret", "Kata-kata Lisan Anak", 
-  "Pernapasan Sirkular", "Suara Jernih dan Merdu", "Mezzo-Sopran Koloratura", 
-  "Sopran Koloratura", "Konter-Tenor", "Alto Dramatis", "Vokal dengan Kedalaman Emosi", 
-  "AI Wanita", "Suara Emosional Wanita", "Suara Lembut", "Paduan Suara Gospel", 
-  "Fonasi Ingresif", "Slang Jamaika", "Bass Lirik", "Mezzo-Sopran", 
-  "Nyanyian Mikrotonal", "Suara Miku", "Suara Redam", "Rap Cepat", 
-  "Vokal Robotik", "Shibuya-kei", "Sopran", "Soubrette", "Suara Sensual Pria Spanyol", 
-  "Bicara Cepat", "Tenor Spinto", "Tenor", "Nyanyian Tenggorokan", "Bariton Verdi", 
-  "Vokal Sangat Robotik", "Tambahan Vokal", "Vocal Fry", "Whistle Register"
+  "Male", "Female", "Serak", "Berbisik", "Berteriak", "Bass Dalam", "Rap", "Growl", 
+  "Bernapas", "Suara Anak-anak", "Kata-kata Lisan", "Vokal Dangdut", 
+  "Vokal Slowrock Malaysia", "Chanting", "Pernapasan Sirkular", 
+  "Suara Jernih dan Merdu", "Vokal dengan Kedalaman Emosi", 
+  "Suara Emosional Wanita", "Suara Lembut", "Suara Redam", "Rap Cepat", 
+  "Nyanyian Tenggorokan", "Vokal Sangat Robotik", "Vocal Fry", "Whistle Register"
 ];
 
 const TEMPOS = [
