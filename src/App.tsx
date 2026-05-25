@@ -149,7 +149,6 @@ const MODELS = [
 const DURATIONS = ["4", "5", "6", "7", "8"];
 
 export default function App() {
-  const [title, setTitle] = useState('');
   const [about, setAbout] = useState('');
   const [isPop, setIsPop] = useState(false);
   const [isPuitis, setIsPuitis] = useState(false);
@@ -173,6 +172,7 @@ export default function App() {
   const [malaysiaCreator, setMalaysiaCreator] = useState('');
   const [key, setKey] = useState('');
   const [duration, setDuration] = useState('4');
+  const [lyricMode, setLyricMode] = useState('auto'); // 'auto' or 'manual'
   const [selectedModel, setSelectedModel] = useState('gemini-3-flash-preview');
   
   // Thematic Intro Modal State
@@ -210,8 +210,8 @@ export default function App() {
         Buat lirik lagu dan deskripsi gaya musik (music style prompt) untuk AI Music Generator (Suno/Udio).
         
         Detail Lagu:
-        Judul: ${title || 'Tanpa Judul'}
-        Tentang: ${about}
+        Mode Lirik: ${lyricMode === 'auto' ? 'Tulis Baru Otomatis' : 'Gunakan Lirik Saya Sendiri'}
+        ${lyricMode === 'auto' ? `Tentang/Tema: ${about}` : `LIRIK YANG HARUS DIGUNAKAN: \n${about}`}
         Opsi Tambahan: ${[
           isPop && 'Pop Style',
           isPuitis && 'Puitis (Slow Rock Malaysia style)',
@@ -245,6 +245,10 @@ export default function App() {
         Durasi: ${duration} menit
 
         INSTRUKSI KHUSUS LIRIK & MUSIK:
+        ${lyricMode === 'manual' ? `PENTING: JANGAN membuat lirik baru secara total. Gunakan lirik yang telah disediakan di atas sebagai basis, namun lakukan optimasi berikut:
+        a. Gunakan Distorsi Ejaan (Trik Terbaik): Ubah pengejaan kata-kata tertentu (terutama yang mungkin sensitif bagi sistem filter AI) dengan tanda hubung atau fonetik unik. Misal ubah "Kemesraan ini" menjadi "Kemes-ra-an iy-niy", atau "Mimpi" menjadi "Miym-piy". Pastikan pelafalan tetap mulus saat dinyanyikan.
+        b. Ganti 1-2 Sinonim Kata: Ubah satu atau dua kata populer dengan padanannya yang lebih puitis. Contoh: ubah "bintang di surga" menjadi "lentera cakrawala" atau "permata angkasa".
+        c. Format lirik ke dalam bagian-bagian lagu (Verse, Chorus, dll) dan tambahkan perintah musik di setiap bagian.` : 'Buat lirik lagu baru yang puitis dan orisinal berdasarkan tema yang diberikan.'}
         1. Di setiap bagian lirik (Verse, Chorus, Bridge, dll), tambahkan perintah musik dalam kurung di awal baris bagian tersebut.
         2. Perintah musik harus mencakup instruksi tempo yang dinamis namun TETAP berada dalam rentang yang dipilih user: ${tempo}.
            - Contoh: Jika user memilih "40-60 BPM", maka AI boleh menulis (Verse, Slow tempo 45 BPM, emotional piano) atau (Chorus, Faster 58 BPM, powerful strings).
@@ -365,54 +369,78 @@ export default function App() {
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="md:col-span-2 space-y-3">
-                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-ink/40 flex items-center gap-2">
-                  <Type size={12} className="text-accent" /> Song Title
-                </label>
-                <input 
-                  type="text" 
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Enter song title..."
-                  className="w-full glass-input rounded-2xl px-6 py-4 text-lg font-serif placeholder:text-ink/20 text-ink"
-                />
+            <div className="space-y-3">
+              <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-ink/40 flex items-center gap-2">
+                <Clock size={12} className="text-accent" /> Durasi (Menit)
+              </label>
+              <div className="flex gap-2">
+                {DURATIONS.map(d => (
+                  <button
+                    key={d}
+                    onClick={() => setDuration(d)}
+                    className={cn(
+                      "flex-1 py-4 rounded-2xl text-sm font-bold transition-all border",
+                      duration === d 
+                        ? "bg-accent text-white border-accent shadow-lg shadow-accent/20" 
+                        : "bg-black/[0.02] border-black/5 text-ink/40 hover:text-ink hover:bg-black/5"
+                    )}
+                  >
+                    {d}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex gap-4">
+                <button
+                  onClick={() => setLyricMode('auto')}
+                  className={cn(
+                    "flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all border",
+                    lyricMode === 'auto'
+                      ? "bg-accent text-white border-accent shadow-lg shadow-accent/20"
+                      : "bg-black/[0.02] border-black/5 text-ink/40 hover:text-ink hover:bg-black/5"
+                  )}
+                >
+                  <div className={cn(
+                    "w-3 h-3 rounded-full border-2 flex items-center justify-center",
+                    lyricMode === 'auto' ? "border-white" : "border-ink/20"
+                  )}>
+                    {lyricMode === 'auto' && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                  </div>
+                  Tulis Lirik Baru Otomatis
+                </button>
+                <button
+                  onClick={() => setLyricMode('manual')}
+                  className={cn(
+                    "flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all border",
+                    lyricMode === 'manual'
+                      ? "bg-accent text-white border-accent shadow-lg shadow-accent/20"
+                      : "bg-black/[0.02] border-black/5 text-ink/40 hover:text-ink hover:bg-black/5"
+                  )}
+                >
+                  <div className={cn(
+                    "w-3 h-3 rounded-full border-2 flex items-center justify-center",
+                    lyricMode === 'manual' ? "border-white" : "border-ink/20"
+                  )}>
+                    {lyricMode === 'manual' && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                  </div>
+                  Saya Punya Lirik Sendiri
+                </button>
               </div>
 
               <div className="space-y-3">
                 <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-ink/40 flex items-center gap-2">
-                  <Clock size={12} className="text-accent" /> Durasi (Menit)
+                  <Sparkles size={12} className="text-accent" /> {lyricMode === 'auto' ? 'What is it about?' : 'Tempel Lirik Anda'}
                 </label>
-                <div className="flex gap-2">
-                  {DURATIONS.map(d => (
-                    <button
-                      key={d}
-                      onClick={() => setDuration(d)}
-                      className={cn(
-                        "flex-1 py-4 rounded-2xl text-sm font-bold transition-all border",
-                        duration === d 
-                          ? "bg-accent text-white border-accent shadow-lg shadow-accent/20" 
-                          : "bg-black/[0.02] border-black/5 text-ink/40 hover:text-ink hover:bg-black/5"
-                      )}
-                    >
-                      {d}
-                    </button>
-                  ))}
-                </div>
+                <textarea 
+                  value={about}
+                  onChange={(e) => setAbout(e.target.value)}
+                  placeholder={lyricMode === 'auto' ? "Describe the story, theme, or emotions..." : "Tulis atau tempel lirik Anda di sini..."}
+                  rows={5}
+                  className="w-full glass-input rounded-2xl px-6 py-4 text-lg placeholder:text-ink/20 text-ink resize-none"
+                />
               </div>
-            </div>
-
-            <div className="space-y-3">
-              <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-ink/40 flex items-center gap-2">
-                <Sparkles size={12} className="text-accent" /> What is it about?
-              </label>
-              <textarea 
-                value={about}
-                onChange={(e) => setAbout(e.target.value)}
-                placeholder="Describe the story, theme, or emotions..."
-                rows={5}
-                className="w-full glass-input rounded-2xl px-6 py-4 text-lg placeholder:text-ink/20 text-ink resize-none"
-              />
             </div>
 
             <div className="flex flex-wrap gap-6 pt-2">
